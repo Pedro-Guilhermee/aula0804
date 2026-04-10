@@ -2,9 +2,12 @@ package vagasws;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +38,7 @@ public class EmpresaController {
         return resposta;
     }
 
-    @PostMapping
+    @PostMapping("fci/api/empresas")
     public Empresa createEmpresa(@RequestBody Empresa novaEmpresa){
         long maiorId = 1;
         for (Empresa e : empresas) {
@@ -48,5 +51,23 @@ public class EmpresaController {
         empresas.add(novaEmpresa);
         return novaEmpresa;
 
+    }
+
+    @PutMapping("/fci/api/empresas/{id}")
+    public Empresa updateEmpresa(@PathVariable long id, @RequestBody Empresa dadosAtualizados) {
+        for (Empresa e : empresas) {
+            if (e.getId() == id) {
+                e.setNome(dadosAtualizados.getNome());
+                e.setCnpj(dadosAtualizados.getCnpj());
+                e.setEmail(dadosAtualizados.getEmail());
+                return e;
+            }
+        }
+        return null;
+    }
+
+    @DeleteMapping("/fci/api/empresas/{id}")
+    public void deleteEmpresa(@PathVariable long id) {
+        empresas.removeIf(e -> e.getId() == id);
     }
 }
