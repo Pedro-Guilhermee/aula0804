@@ -19,6 +19,9 @@ public class EmpresaController {
     public EmpresaController(){
         empresas.add(new Empresa(1, "Empresa Alfa LTDA", "12.345.678/0001-90", "contato@empresa-alfa.com"));
         empresas.add(new Empresa(2, "Empresa Beta LTDA", "12.345.999/0001-11", "contato@empresa-beta.com"));
+        empresas.add(new Empresa(3, "Gamma Serviços S.A.", "11.222.333/0001-44", "servicos@gamma.com"));
+        empresas.add(new Empresa(4, "Delta Engenharia", "22.333.444/0001-55", "contato@deltaeng.com"));
+        empresas.add(new Empresa(5, "Epsilon Digital", "33.444.555/0001-66", "email@epsilondigital.com"));
     }
 
     @GetMapping("fci/api/empresas")

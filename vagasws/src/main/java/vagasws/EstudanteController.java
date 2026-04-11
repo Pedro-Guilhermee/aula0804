@@ -2,53 +2,79 @@ package vagasws;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/fci/api/estudantes")
 public class EstudanteController {
 
     private List<Estudante> estudantes = new ArrayList<>();
 
     public EstudanteController() {
-        estudantes.add(new Estudante(1, "João Silva", "123.456.789-00", 5000.0));
+        estudantes.add(new Estudante(1, "Ana Paula Souza", "ana.souza@email.com", "2002-03-15", 2020));
+        estudantes.add(new Estudante(2, "Carlos Henrique Lima", "carlos.lima@email.com", "2001-10-22", 2019));
+        estudantes.add(new Estudante(3, "Fernanda Oliveira", "fernanda.oliveira@email.com", "2003-07-05", 2021));
+        estudantes.add(new Estudante(4, "Lucas Pereira", "lucas.pereira@email.com", "2002-04-11", 2020));
+        estudantes.add(new Estudante(5, "Gabriela Martins", "gabriela.martins@email.com", "2001-12-25", 2019));
+        estudantes.add(new Estudante(6, "Rafael Costa", "rafael.costa@email.com", "2000-09-13", 2018));
+        estudantes.add(new Estudante(7, "Juliana Silva", "juliana.silva@email.com", "2002-06-18", 2020));
+        estudantes.add(new Estudante(8, "Marcos Vinícius", "marcos.vinicius@email.com", "2003-01-30", 2021));
+        estudantes.add(new Estudante(9, "Camila Azevedo", "camila.azevedo@email.com", "2001-11-08", 2019));
+        estudantes.add(new Estudante(10, "Felipe Cardoso", "felipe.cardoso@email.com", "2000-08-27", 2018));
     }
 
-    @GetMapping("fci/api/estudantes")
-    public Iterable<Estudante> getEstudantes() {
+    @GetMapping
+    public List<Estudante> getEstudantes() {
         return estudantes;
     }
 
-    @GetMapping("/fci/api/estudantes/{id}")
+    @GetMapping("/{id}")
     public Estudante getEstudante(@PathVariable long id) {
-        for (Estudante c : estudantes) {
-            if (c.getId() == id) return c;
-        }
-        return null;
-    }
-
-    @PostMapping("fci/api/estudantes")
-    public Estudante createEstudante(@RequestBody Estudante novo) {
-        long novoId = estudantes.isEmpty() ? 1 : estudantes.get(estudantes.size() - 1).getId() + 1;
-        novo.setId(novoId);
-        estudantes.add(novo);
-        return novo;
-    }
-
-    @PutMapping("/fci/api/estudantes/{id}")
-    public Estudante updateEstudante(@PathVariable long id, @RequestBody Estudante dados) {
-        for (Estudante c : estudantes) {
-            if (c.getId() == id) {
-                c.setNome(dados.getNome());
-                c.setCpf(dados.getCpf());
-                c.setPretensaoSalarial(dados.getPretensaoSalarial());
-                return c;
+        for (Estudante e : estudantes) {
+            if (e.getId() == id) {
+                return e;
             }
         }
         return null;
     }
 
-    @DeleteMapping("/fci/api/estudantes/{id}")
+    @PostMapping
+    public Estudante createEstudante(@RequestBody Estudante novoEstudante) {
+        long maiorId = 0;
+        for (Estudante e : estudantes) {
+            if (e.getId() > maiorId) {
+                maiorId = e.getId();
+            }
+        }
+        novoEstudante.setId(maiorId + 1);
+        estudantes.add(novoEstudante);
+        return novoEstudante;
+    }
+
+    @PutMapping("/{id}")
+    public Estudante updateEstudante(@PathVariable long id, @RequestBody Estudante dadosAtualizados) {
+        for (Estudante e : estudantes) {
+            if (e.getId() == id) {
+                e.setNome(dadosAtualizados.getNome());
+                e.setEmail(dadosAtualizados.getEmail());
+                e.setNascimento(dadosAtualizados.getNascimento());
+                e.setAnoIngresso(dadosAtualizados.getAnoIngresso());
+                return e;
+            }
+        }
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
     public void deleteEstudante(@PathVariable long id) {
-        estudantes.removeIf(c -> c.getId() == id);
+        estudantes.removeIf(e -> e.getId() == id);
     }
 }

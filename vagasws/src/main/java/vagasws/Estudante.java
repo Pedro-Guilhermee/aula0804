@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter 
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Estudante {
     private long id;
     private String nome;
-    private String cpf;
-    private double pretensaoSalarial;
+    private String email;
+    private String nascimento; // Formato ISO (YYYY-MM-DD)
+    private int anoIngresso;
 }
